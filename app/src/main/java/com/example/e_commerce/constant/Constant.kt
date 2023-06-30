@@ -6,4 +6,5 @@ object Constant {
 
     //BaseURI
     const val BASE_URI = "https://student.valuxapps.com/api/"
+    const val LOGIN = "login"
 }

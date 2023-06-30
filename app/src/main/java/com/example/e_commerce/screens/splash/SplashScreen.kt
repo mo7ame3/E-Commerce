@@ -18,13 +18,15 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.e_commerce.R
 import com.example.e_commerce.constant.Constant
+import com.example.e_commerce.navigation.AllScreens
 import com.example.e_commerce.sharedpreference.SharedPreference
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(navController: NavController) {
     val scale = remember {
         Animatable(0f)
     }
@@ -43,11 +45,13 @@ fun SplashScreen() {
         delay(500L)
         if (getToken.value.toString().isNotEmpty()) {
             Constant.token = getToken.value.toString()
-
+            navController.navigate(AllScreens.HomeScreen.name) {
+                navController.popBackStack()
+            }
         } else {
-//            navController.navigate(AllScreens.LoginScreen.name) {
-//                navController.popBackStack()
-//            }
+            navController.navigate(AllScreens.LoginScreen.name) {
+                navController.popBackStack()
+            }
         }
     })
 

@@ -66,6 +66,7 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
 
     // Dagger - Hilt
     implementation 'com.google.dagger:hilt-android:2.45'
