@@ -12,4 +12,10 @@ interface EcommerceApi {
         @Body loginBody: Map<String, String>
     ): LoginAndRegister
 
+
+    @POST(Constant.REGISTER)
+    suspend fun register(
+        @Body registerBody: Map<String, String>
+    ): LoginAndRegister
+
 }

@@ -8,6 +8,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.e_commerce.screens.home.HomeScreen
 import com.example.e_commerce.screens.login.LoginScreen
 import com.example.e_commerce.screens.login.LoginViewModel
+import com.example.e_commerce.screens.register.RegisterScreen
+import com.example.e_commerce.screens.register.RegisterViewModel
 import com.example.e_commerce.screens.splash.SplashScreen
 
 @Composable
@@ -29,5 +31,11 @@ fun NavGraph() {
         composable(route = AllScreens.HomeScreen.name) {
             HomeScreen(navController = navController)
         }
+
+        composable(route = AllScreens.RegisterScreen.name) {
+            val registerViewModel = hiltViewModel<RegisterViewModel>()
+            RegisterScreen(navController = navController, registerViewModel = registerViewModel)
+        }
+
     }
 }

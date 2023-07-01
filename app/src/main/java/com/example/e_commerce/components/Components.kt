@@ -27,6 +27,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -80,6 +81,37 @@ fun EmailInput(
             Icon(imageVector = Icons.Default.Email, contentDescription = null)
         },
         isError = error.value
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextInput(
+    modifier: Modifier = Modifier,
+    label:String,
+    text: MutableState<String>,
+    keyboardType: KeyboardType = KeyboardType.Email,
+    onAction: KeyboardActions = KeyboardActions.Default,
+    isSingleLine: Boolean = true,
+    imageVector: ImageVector
+) {
+
+    OutlinedTextField(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 25.dp, end = 25.dp),
+        shape = RoundedCornerShape(25.dp),
+        label = { Text(text = label) },
+        value = text.value,
+        onValueChange = {
+            text.value = it
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+        keyboardActions = onAction,
+        singleLine = isSingleLine,
+        leadingIcon = {
+            Icon(imageVector = imageVector, contentDescription = null)
+        },
     )
 }
 

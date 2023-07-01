@@ -1,4 +1,4 @@
-package com.example.e_commerce.screens.login
+package com.example.e_commerce.screens.register
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -32,6 +36,7 @@ import com.example.e_commerce.components.CircleInductor
 import com.example.e_commerce.components.EmailInput
 import com.example.e_commerce.components.LoginButton
 import com.example.e_commerce.components.PasswordInput
+import com.example.e_commerce.components.TextInput
 import com.example.e_commerce.constant.Constant
 import com.example.e_commerce.data.WrapperClass
 import com.example.e_commerce.model.loginAndRegister.LoginAndRegister
@@ -45,14 +50,17 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(
-    navController: NavController,
-    loginViewModel: LoginViewModel
-) {
+fun RegisterScreen(navController: NavController, registerViewModel: RegisterViewModel) {
     var loading by remember {
         mutableStateOf(false)
     }
     val email = remember {
+        mutableStateOf("")
+    }
+    val name = remember {
+        mutableStateOf("")
+    }
+    val phone = remember {
         mutableStateOf("")
     }
     val password = remember {
@@ -75,30 +83,52 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 Text(
-                    text = "Login", style = TextStyle(
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold
+                    text = "Register", style = TextStyle(
+                        fontSize = 24.sp, fontWeight = FontWeight.Bold
                     )
                 )
                 Spacer(modifier = Modifier.height(25.dp))
-                EmailInput(email = email, onAction = KeyboardActions {
-                    keyboardController?.hide()
-                }, error = emailError)
+                TextInput(label = "الأسم",
+                    text = name,
+                    imageVector = Icons.Default.Person,
+                    onAction = KeyboardActions {
+                        keyboardController?.hide()
+                    })
                 Spacer(modifier = Modifier.height(15.dp))
-                PasswordInput(
-                    password = password,
+                EmailInput(
+                    email = email, error = emailError,
+                    onAction = KeyboardActions {
+                        keyboardController?.hide()
+                    },
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                TextInput(
+                    label = "رقم الهاتف",
+                    text = phone,
+                    imageVector = Icons.Default.Phone,
+                    onAction = KeyboardActions {
+                        keyboardController?.hide()
+                    },
+                    keyboardType = KeyboardType.Number
+                )
+
+                Spacer(modifier = Modifier.height(15.dp))
+                PasswordInput(password = password,
                     eye = eye,
                     onButtonAction = { eye.value = !eye.value },
                     onAction = KeyboardActions {
-                        if (!emailError.value && password.value.isNotBlank()) {
+                        if (!emailError.value && password.value.isNotBlank()
+                            && name.value.isNotBlank() && phone.value.isNotBlank()
+                        ) {
                             loading = true
                             scope.launch {
                                 val response: WrapperClass<LoginAndRegister, Boolean, Exception> =
-                                    loginViewModel.login(
+                                    registerViewModel.register(
                                         email = email.value,
-                                        password = password.value
+                                        password = password.value,
+                                        name = name.value,
+                                        phone = phone.value
                                     )
                                 if (response.data?.status == true) {
                                     loading = false
@@ -112,24 +142,26 @@ fun LoginScreen(
                                 } else {
                                     loading = false
                                     Toast.makeText(
-                                        context,
-                                        response.data?.message,
-                                        Toast.LENGTH_SHORT
+                                        context, response.data?.message, Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                                keyboardController?.hide()
                             }
                         }
                     })
+
                 Spacer(modifier = Modifier.height(15.dp))
-                LoginButton(label = "Login") {
-                    if (!emailError.value && password.value.isNotBlank()) {
+                LoginButton(label = "Register") {
+                    if (!emailError.value && password.value.isNotBlank()
+                        && name.value.isNotBlank() && phone.value.isNotBlank()
+                    ) {
                         loading = true
                         scope.launch {
                             val response: WrapperClass<LoginAndRegister, Boolean, Exception> =
-                                loginViewModel.login(
+                                registerViewModel.register(
                                     email = email.value,
-                                    password = password.value
+                                    password = password.value,
+                                    name = name.value,
+                                    phone = phone.value
                                 )
                             if (response.data?.status == true) {
                                 loading = false
@@ -143,9 +175,7 @@ fun LoginScreen(
                             } else {
                                 loading = false
                                 Toast.makeText(
-                                    context,
-                                    response.data?.message,
-                                    Toast.LENGTH_SHORT
+                                    context, response.data?.message, Toast.LENGTH_SHORT
                                 ).show()
                             }
                         }
@@ -160,19 +190,17 @@ fun LoginScreen(
                     mainAxisSize = SizeMode.Wrap
                 ) {
                     Text(
-                        "don't have account?", style = TextStyle(
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.Black
+                        "back to", style = TextStyle(
+                            fontWeight = FontWeight.SemiBold, color = Color.Black
                         )
                     )
-                    Text("Register now",
-                        style = TextStyle(
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color.Red
-                        ), modifier = Modifier.clickable {
-                            navController.navigate(route = AllScreens.RegisterScreen.name)
+                    Text("Login Screen", style = TextStyle(
+                        fontWeight = FontWeight.SemiBold, color = Color.Red
+                    ), modifier = Modifier.clickable {
+                        navController.navigate(route = AllScreens.LoginScreen.name) {
+                            navController.popBackStack()
                         }
-                    )
+                    })
                 }
             }
         } else {
