@@ -8,4 +8,6 @@ object Constant {
     const val BASE_URI = "https://student.valuxapps.com/api/"
     const val LOGIN = "login"
     const val REGISTER = "register"
+    const val HOME = "home"
+    const val FAVORITE = "favorites"
 }

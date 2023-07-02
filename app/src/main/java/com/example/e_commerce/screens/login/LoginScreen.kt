@@ -103,6 +103,7 @@ fun LoginScreen(
                                 if (response.data?.status == true) {
                                     loading = false
                                     sharedPreference.saveToken(token = response.data!!.data.token)
+                                    sharedPreference.saveUserName(token = response.data!!.data.name)
                                     Constant.token = response.data!!.data.token
                                     navController.navigate(route = AllScreens.HomeScreen.name) {
                                         navController.popBackStack()
@@ -134,6 +135,7 @@ fun LoginScreen(
                             if (response.data?.status == true) {
                                 loading = false
                                 sharedPreference.saveToken(token = response.data!!.data.token)
+                                sharedPreference.saveUserName(token = response.data!!.data.name)
                                 Constant.token = response.data!!.data.token
                                 navController.navigate(route = AllScreens.HomeScreen.name) {
                                     navController.popBackStack()

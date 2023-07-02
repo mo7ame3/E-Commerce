@@ -15,16 +15,26 @@ class SharedPreference(private val context: Context) {
     companion object {
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "token")
         val TOKEN = stringPreferencesKey("token")
+        val USERNAME = stringPreferencesKey("userName")
     }
 
     val getToken: Flow<String?> = context.dataStore.data
         .map { Preferences ->
             Preferences[TOKEN] ?: ""
         }
+    val getUserName: Flow<String?> = context.dataStore.data
+        .map { Preferences ->
+            Preferences[USERNAME] ?: ""
+        }
 
     suspend fun saveToken(token: String) {
         context.dataStore.edit { Preferences ->
             Preferences[TOKEN] = token
+        }
+    }
+    suspend fun saveUserName(token: String) {
+        context.dataStore.edit { Preferences ->
+            Preferences[USERNAME] = token
         }
     }
 
