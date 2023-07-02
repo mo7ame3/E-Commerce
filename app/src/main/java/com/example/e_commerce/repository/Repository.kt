@@ -2,6 +2,7 @@ package com.example.e_commerce.repository
 
 import android.util.Log
 import com.example.e_commerce.data.WrapperClass
+import com.example.e_commerce.model.cart.AddOrDeleteCart
 import com.example.e_commerce.model.favorite.AddOrDeleteFavorite
 import com.example.e_commerce.model.home.Home
 import com.example.e_commerce.model.loginAndRegister.LoginAndRegister
@@ -16,6 +17,7 @@ class Repository @Inject constructor(private val api: EcommerceApi) {
     private val register = WrapperClass<LoginAndRegister, Boolean, Exception>()
     private val home = WrapperClass<Home, Boolean, Exception>()
     private val favorite = WrapperClass<AddOrDeleteFavorite, Boolean, Exception>()
+    private val cart = WrapperClass<AddOrDeleteCart, Boolean, Exception>()
 
     suspend fun login(loginBody: Map<String, String>): WrapperClass<LoginAndRegister, Boolean, Exception> {
         login.loading = true
@@ -59,13 +61,13 @@ class Repository @Inject constructor(private val api: EcommerceApi) {
 
     suspend fun favorite(
         authorization: String,
-        favoriteId: String
+        productId: String
     ): WrapperClass<AddOrDeleteFavorite, Boolean, Exception> {
         favorite.loading = true
         try {
             favorite.data = api.favorite(
                 authorization = authorization, favoriteBody = mapOf(
-                    "product_id" to favoriteId
+                    "product_id" to productId
                 )
             )
             favorite.loading = false
@@ -75,6 +77,25 @@ class Repository @Inject constructor(private val api: EcommerceApi) {
             favorite.e = e
         }
         return favorite
+    }
+
+    suspend fun cart(
+        authorization: String,
+        productId: String
+    ): WrapperClass<AddOrDeleteCart, Boolean, Exception> {
+        cart.loading = true
+        try {
+            cart.data = api.cart(
+                authorization = authorization, cartBody = mapOf(
+                    "product_id" to productId
+                )
+            )
+            cart.loading = false
+        } catch (e: Exception) {
+            Log.d("TAG", "cart: $e")
+            cart.e = e
+        }
+        return cart
     }
 
 }

@@ -10,4 +10,5 @@ object Constant {
     const val REGISTER = "register"
     const val HOME = "home"
     const val FAVORITE = "favorites"
+    const val CART = "carts"
 }

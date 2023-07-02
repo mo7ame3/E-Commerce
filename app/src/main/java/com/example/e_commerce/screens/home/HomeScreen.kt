@@ -223,19 +223,18 @@ fun ImageCard(
                         scope.launch {
                             val response = homeViewModel.favorites(
                                 authorization = Constant.token,
-                                favoriteId = item.id.toString()
+                                productId = item.id.toString()
                             )
                             if (response.data?.status == false) {
                                 isFav.value = true
                             }
                         }
-                    }
-                    else {
+                    } else {
                         isFav.value = true
                         scope.launch {
                             val response = homeViewModel.favorites(
                                 authorization = Constant.token,
-                                favoriteId = item.id.toString()
+                                productId = item.id.toString()
                             )
                             if (response.data?.status == false) {
                                 isFav.value = false
@@ -258,11 +257,38 @@ fun ImageCard(
                     }
                 )
 
-                AssistChip(onClick = { /*TODO*/ }, colors = AssistChipDefaults.assistChipColors(
+                AssistChip(onClick = {
+                    if (isCart.value) {
+                        isCart.value = false
+                        scope.launch {
+                            val response = homeViewModel.cart(
+                                authorization = Constant.token,
+                                productId = item.id.toString()
+                            )
+                            if (response.data?.status == false) {
+                                isCart.value = true
+                            }
+                        }
+                    } else {
+                        isCart.value = true
+                        scope.launch {
+                            val response = homeViewModel.cart(
+                                authorization = Constant.token,
+                                productId = item.id.toString()
+                            )
+                            if (response.data?.status == false) {
+                                isCart.value = false
+                            }
+                        }
+                    }
+                }, colors = AssistChipDefaults.assistChipColors(
                     leadingIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 ),
                     leadingIcon = {
-                        Icon(imageVector = Icons.Outlined.ShoppingCart, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Outlined.ShoppingCart, contentDescription = null,
+                            tint = if (!isCart.value) Color.Black else Color.Red,
+                        )
                     },
                     label = {
                         Text(text = if (!isCart.value) "Make in Cart" else "Remove from Cart")

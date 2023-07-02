@@ -1,6 +1,7 @@
 package com.example.e_commerce.network
 
 import com.example.e_commerce.constant.Constant
+import com.example.e_commerce.model.cart.AddOrDeleteCart
 import com.example.e_commerce.model.favorite.AddOrDeleteFavorite
 import com.example.e_commerce.model.home.Home
 import com.example.e_commerce.model.loginAndRegister.LoginAndRegister
@@ -33,4 +34,10 @@ interface EcommerceApi {
         @Body favoriteBody: Map<String, String>
     ): AddOrDeleteFavorite
 
+
+    @POST(Constant.CART)
+    suspend fun cart(
+        @Header("Authorization") authorization: String,
+        @Body cartBody: Map<String, String>
+    ): AddOrDeleteCart
 }
