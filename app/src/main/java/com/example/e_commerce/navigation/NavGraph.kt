@@ -5,6 +5,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.e_commerce.screens.cart.CartScreen
+import com.example.e_commerce.screens.cart.CartViewModel
+import com.example.e_commerce.screens.favorites.FavoriteScreen
+import com.example.e_commerce.screens.favorites.FavoriteViewModel
 import com.example.e_commerce.screens.home.HomeScreen
 import com.example.e_commerce.screens.home.HomeViewModel
 import com.example.e_commerce.screens.login.LoginScreen
@@ -37,6 +41,14 @@ fun NavGraph() {
         composable(route = AllScreens.RegisterScreen.name) {
             val registerViewModel = hiltViewModel<RegisterViewModel>()
             RegisterScreen(navController = navController, registerViewModel = registerViewModel)
+        }
+        composable(route = AllScreens.FavoriteScreen.name) {
+            val favoriteViewModel = hiltViewModel<FavoriteViewModel>()
+            FavoriteScreen(navController = navController, favoriteViewModel = favoriteViewModel)
+        }
+        composable(route = AllScreens.CartScreen.name) {
+            val cartViewModel = hiltViewModel<CartViewModel>()
+            CartScreen(navController = navController, cartViewModel = cartViewModel)
         }
 
     }

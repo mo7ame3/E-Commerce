@@ -1,4 +1,4 @@
-package com.example.e_commerce.model.cart
+package com.example.e_commerce.model.favorite.addOrDelete
 
 data class Product(
     val discount: Int,

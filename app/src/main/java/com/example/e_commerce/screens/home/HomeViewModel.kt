@@ -2,8 +2,8 @@ package com.example.e_commerce.screens.home
 
 import androidx.lifecycle.ViewModel
 import com.example.e_commerce.data.WrapperClass
-import com.example.e_commerce.model.cart.AddOrDeleteCart
-import com.example.e_commerce.model.favorite.AddOrDeleteFavorite
+import com.example.e_commerce.model.cart.addOrDelete.AddOrDeleteCart
+import com.example.e_commerce.model.favorite.addOrDelete.AddOrDeleteFavorite
 import com.example.e_commerce.model.home.Home
 import com.example.e_commerce.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,14 +20,14 @@ class HomeViewModel @Inject constructor(private val repository: Repository) : Vi
         authorization: String,
         productId: String
     ): WrapperClass<AddOrDeleteFavorite, Boolean, Exception> {
-        return repository.favorite(authorization = authorization, productId = productId)
+        return repository.addFavorite(authorization = authorization, productId = productId)
     }
 
     suspend fun cart(
         authorization: String,
         productId: String
     ): WrapperClass<AddOrDeleteCart, Boolean, Exception> {
-        return repository.cart(authorization = authorization, productId = productId)
+        return repository.addCart(authorization = authorization, productId = productId)
     }
 
 }

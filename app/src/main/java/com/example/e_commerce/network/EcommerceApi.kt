@@ -1,8 +1,10 @@
 package com.example.e_commerce.network
 
 import com.example.e_commerce.constant.Constant
-import com.example.e_commerce.model.cart.AddOrDeleteCart
-import com.example.e_commerce.model.favorite.AddOrDeleteFavorite
+import com.example.e_commerce.model.cart.addOrDelete.AddOrDeleteCart
+import com.example.e_commerce.model.cart.get.GetCart
+import com.example.e_commerce.model.favorite.addOrDelete.AddOrDeleteFavorite
+import com.example.e_commerce.model.favorite.get.GetFavorite
 import com.example.e_commerce.model.home.Home
 import com.example.e_commerce.model.loginAndRegister.LoginAndRegister
 import retrofit2.http.Body
@@ -29,15 +31,25 @@ interface EcommerceApi {
     ): Home
 
     @POST(Constant.FAVORITE)
-    suspend fun favorite(
+    suspend fun addFavorite(
         @Header("Authorization") authorization: String,
         @Body favoriteBody: Map<String, String>
     ): AddOrDeleteFavorite
 
 
     @POST(Constant.CART)
-    suspend fun cart(
+    suspend fun addCart(
         @Header("Authorization") authorization: String,
         @Body cartBody: Map<String, String>
     ): AddOrDeleteCart
+
+    @GET(Constant.FAVORITE)
+    suspend fun getFavorite(
+        @Header("Authorization") authorization: String,
+    ): GetFavorite
+
+    @GET(Constant.CART)
+    suspend fun getCart(
+        @Header("Authorization") authorization: String,
+    ):GetCart
 }

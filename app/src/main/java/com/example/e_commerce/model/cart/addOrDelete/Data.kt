@@ -1,4 +1,4 @@
-package com.example.e_commerce.model.cart
+package com.example.e_commerce.model.cart.addOrDelete
 
 data class Data(
     val id: Int,

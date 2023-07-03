@@ -2,8 +2,10 @@ package com.example.e_commerce.repository
 
 import android.util.Log
 import com.example.e_commerce.data.WrapperClass
-import com.example.e_commerce.model.cart.AddOrDeleteCart
-import com.example.e_commerce.model.favorite.AddOrDeleteFavorite
+import com.example.e_commerce.model.cart.addOrDelete.AddOrDeleteCart
+import com.example.e_commerce.model.cart.get.GetCart
+import com.example.e_commerce.model.favorite.addOrDelete.AddOrDeleteFavorite
+import com.example.e_commerce.model.favorite.get.GetFavorite
 import com.example.e_commerce.model.home.Home
 import com.example.e_commerce.model.loginAndRegister.LoginAndRegister
 import com.example.e_commerce.network.EcommerceApi
@@ -16,8 +18,10 @@ class Repository @Inject constructor(private val api: EcommerceApi) {
     private val login = WrapperClass<LoginAndRegister, Boolean, Exception>()
     private val register = WrapperClass<LoginAndRegister, Boolean, Exception>()
     private val home = WrapperClass<Home, Boolean, Exception>()
-    private val favorite = WrapperClass<AddOrDeleteFavorite, Boolean, Exception>()
-    private val cart = WrapperClass<AddOrDeleteCart, Boolean, Exception>()
+    private val addFavorite = WrapperClass<AddOrDeleteFavorite, Boolean, Exception>()
+    private val getFavorite = WrapperClass<GetFavorite, Boolean, Exception>()
+    private val addCart = WrapperClass<AddOrDeleteCart, Boolean, Exception>()
+    private val getCart = WrapperClass<GetCart, Boolean, Exception>()
 
     suspend fun login(loginBody: Map<String, String>): WrapperClass<LoginAndRegister, Boolean, Exception> {
         login.loading = true
@@ -59,43 +63,76 @@ class Repository @Inject constructor(private val api: EcommerceApi) {
     }
 
 
-    suspend fun favorite(
+    suspend fun addFavorite(
         authorization: String,
         productId: String
     ): WrapperClass<AddOrDeleteFavorite, Boolean, Exception> {
-        favorite.loading = true
+        addFavorite.loading = true
         try {
-            favorite.data = api.favorite(
+            addFavorite.data = api.addFavorite(
                 authorization = authorization, favoriteBody = mapOf(
                     "product_id" to productId
                 )
             )
-            favorite.loading = false
+            addFavorite.loading = false
         } catch (e: Exception) {
             //addNewUser.loading = false
-            Log.d("TAG", "favorite: $e")
-            favorite.e = e
+            Log.d("TAG", "addFavorite: $e")
+            addFavorite.e = e
         }
-        return favorite
+        return addFavorite
     }
 
-    suspend fun cart(
+    suspend fun getFavorite(
+        authorization: String,
+    ): WrapperClass<GetFavorite, Boolean, Exception> {
+        getFavorite.loading = true
+        try {
+            getFavorite.data = api.getFavorite(
+                authorization = authorization,
+            )
+            getFavorite.loading = false
+        } catch (e: Exception) {
+            //addNewUser.loading = false
+            Log.d("TAG", "getFavorite: $e")
+            getFavorite.e = e
+        }
+        return getFavorite
+    }
+
+    suspend fun addCart(
         authorization: String,
         productId: String
     ): WrapperClass<AddOrDeleteCart, Boolean, Exception> {
-        cart.loading = true
+        addCart.loading = true
         try {
-            cart.data = api.cart(
+            addCart.data = api.addCart(
                 authorization = authorization, cartBody = mapOf(
                     "product_id" to productId
                 )
             )
-            cart.loading = false
+            addCart.loading = false
         } catch (e: Exception) {
-            Log.d("TAG", "cart: $e")
-            cart.e = e
+            Log.d("TAG", "addCart: $e")
+            addCart.e = e
         }
-        return cart
+        return addCart
+    }
+
+    suspend fun getCart(
+        authorization: String,
+    ): WrapperClass<GetCart, Boolean, Exception> {
+        getCart.loading = true
+        try {
+            getCart.data = api.getCart(
+                authorization = authorization
+            )
+            getCart.loading = false
+        } catch (e: Exception) {
+            Log.d("TAG", "getCart: $e")
+            getCart.e = e
+        }
+        return getCart
     }
 
 }

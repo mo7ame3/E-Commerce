@@ -5,4 +5,6 @@ enum class AllScreens {
     LoginScreen,
     RegisterScreen,
     HomeScreen,
+    FavoriteScreen,
+    CartScreen,
 }
